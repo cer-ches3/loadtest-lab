@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final Counter requestCounter;
     private final Timer requestTimer;
+    private final List<String> LEAK_CACHE = new ArrayList<>();
 
     public UserService(UserRepository userRepository, MeterRegistry meterRegistry) {
         this.userRepository = userRepository;
@@ -79,5 +81,12 @@ public class UserService {
 
     public List<User> searchByName(String name) {
         return userRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    public void leakMemory() {
+        for (int i = 0; i < 100000; i++) {
+            LEAK_CACHE.add("Leak " + System.currentTimeMillis() + " " + i);
+        }
+        System.out.println("Memory Leak " + LEAK_CACHE.size() + " objects");
     }
 }

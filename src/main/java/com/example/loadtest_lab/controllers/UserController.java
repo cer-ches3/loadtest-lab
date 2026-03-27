@@ -44,4 +44,9 @@ public class UserController {
     public List<User> searchByName(@RequestParam String name) {
         return userService.searchByName(name);
     }
+
+    @GetMapping("/leak")
+    public void leakMemory() {
+        userService.leakMemory();
+    }
 }
