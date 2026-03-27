@@ -57,7 +57,6 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        user.setCreatedAt(LocalDateTime.now());
         User savedUser = userRepository.save(user);
 
         requestTimer.record(System.nanoTime() - start, TimeUnit.NANOSECONDS);
